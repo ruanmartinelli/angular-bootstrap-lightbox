@@ -111,9 +111,9 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
    * @name     getImageCaption
    * @memberOf bootstrapLightbox.Lightbox
    */
-  this.getImageCaption = function (image) {
-    return image.caption;
-  };
+  // this.getImageCaption = function (image) {
+  //   return image.caption;
+  // };
 
   /**
    * Calculate the max and min limits to the width and height of the displayed
@@ -223,8 +223,8 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
       !this.getImageUrl(image).match(/\.(mp4|ogg|webm)$/);
   };
 
-  this.$get = ['$document', '$injector', '$uibModal', '$timeout', 'ImageLoader',
-      function ($document, $injector, $uibModal, $timeout, ImageLoader) {
+  this.$get = ['$document', '$injector', '$uibModal', '$timeout', 'ImageLoader','$sce',
+      function ($document, $injector, $uibModal, $timeout, ImageLoader, $sce) {
     // optional dependency
     var cfpLoadingBar = $injector.has('cfpLoadingBar') ?
       $injector.get('cfpLoadingBar'): null;
@@ -253,11 +253,13 @@ angular.module('bootstrapLightbox').provider('Lightbox', function () {
     Lightbox.templateUrl = this.templateUrl;
     Lightbox.fullScreenMode = this.fullScreenMode;
     Lightbox.getImageUrl = this.getImageUrl;
-    Lightbox.getImageCaption = this.getImageCaption;
     Lightbox.calculateImageDimensionLimits = this.calculateImageDimensionLimits;
     Lightbox.calculateModalDimensions = this.calculateModalDimensions;
     Lightbox.isVideo = this.isVideo;
     Lightbox.isSharedVideo = this.isSharedVideo;
+    Lightbox.getImageCaption = function(image){
+      return $sce.trustAsHtml(image.caption);
+    };
 
     /**
      * Whether keyboard navigation is currently enabled for navigating through
